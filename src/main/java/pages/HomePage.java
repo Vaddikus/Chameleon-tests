@@ -1,30 +1,19 @@
 package pages;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.ScreenShotMaker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class HomePage extends BasePage {
 
-
-
-
-    public HomePage(WebDriver driver) {
-        super(driver);
-        PageFactory.initElements(driver, this);
-    }
-
-    @FindBy(how = How.CSS, using = "[title='Show/Hide content']")
+    @FindBy(how = How.CSS, using = "nav#MainMenu a[title='Show/Hide content']")
     WebElement mainMenu;
 
     @FindBy(how = How.CSS, using = "div#cs-ddlCategories")
@@ -51,6 +40,13 @@ public class HomePage extends BasePage {
     @FindBy(how = How.CSS, using = "span.dx-datagrid-nodata")
     WebElement noData;
 
+    @FindBy(how = How.CSS, using = "div.dx-scrollable-content tr.dx-row:first-child td:nth-child(-n+9)")
+    List<WebElement> firstRowData;
+
+    public HomePage(WebDriver driver) {
+        super(driver);
+    }
+
 
     public void openMenuSection(String menuItem) {
         wait.until(ExpectedConditions.elementToBeClickable(mainMenu));
@@ -63,7 +59,9 @@ public class HomePage extends BasePage {
         driver.findElement(By.cssSelector("li.collapsable-menu--item > a[title='"
                 + menuItem + "']~ ul li a[title='"
                 + item + "']")).click();
-        makeScreenshot();
+
+        new ScreenShotMaker(driver)
+                .takeScreenShot(getClass().getName());
     }
 
     public void clickSearchButton() {
@@ -72,14 +70,16 @@ public class HomePage extends BasePage {
 
     }
 
+    //TODO: need move to MessTemplate page
     public List<String> readDataFromCells() {
-        List<String> sells = new ArrayList<>();
         wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(noData, "No data")));
-        List<WebElement> firstRow = new ArrayList<>();
-        firstRow = driver.findElements(By.cssSelector("div.dx-scrollable-content tr.dx-row:first-child td"));
-        for (int i = 0; i < 9; i++) {
-            sells.add(firstRow.get(i).getText());
-        }
+
+        List<String> sells = new ArrayList<>();
+        List<WebElement> firstRow = firstRowData;
+
+        for (WebElement aFirstRow : firstRow)
+            sells.add(aFirstRow.getText());
+
         return sells;
     }
 
@@ -93,7 +93,7 @@ public class HomePage extends BasePage {
             driver.findElement(By.cssSelector("div[title='" + sells.get(4) + "']")).click();
         }
 
-        if (sells.get(5).length() > 1 ) {
+        if (sells.get(5).length() > 1) {
             filterBrands.click();
             driver.findElement(By.cssSelector("div[title='" + sells.get(5) + "']")).click();
         }
@@ -128,7 +128,5 @@ public class HomePage extends BasePage {
             filterStatus.click();
             driver.findElement(By.cssSelector("div[title='" + sells.get(8) + "']")).click();
         }
-
-
     }
 }

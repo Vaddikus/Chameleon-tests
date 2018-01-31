@@ -1,36 +1,20 @@
 package tests;
-import Factory.Fixtures;
-import Factory.PageGenerator;
-import Factory.WebDriverFactory;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.*;
+
+import org.junit.gen5.api.Test;
 
 import java.util.List;
 
 
-public class WebDriverTest {
-
-    public WebDriver driver;
-
-    public List<String> firstList;
-    public List<String> secondList;
-
+public class WebDriverTest extends Fixtures{
     @Test
-    public void getRowFromTable() throws Exception {
-        driver = WebDriverFactory.getDriver("chrome");
+    public void getRowFromTable() {
+        chameleon.loginPage.open("https://staging-sbtech.chameleon360.net");
+        chameleon.loginPage.logIn("vadym_h", "QAqa123!");
 
-        PageGenerator pages = new PageGenerator(driver);
-        pages.loginPage.open("https://staging-sbtech.chameleon360.net");
-        pages.loginPage.logIn("vadym_h", "QAqa123!");
-        pages.homePage.openSubMenuItem("Communications", "Message Templates");
-        pages.homePage.clickSearchButton();
-        firstList = pages.homePage.readDataFromCells();
-        pages.homePage.searchWithData(firstList);
-        Thread.sleep(500);
-        pages.homePage.clickSearchButton();
-        secondList = pages.homePage.readDataFromCells();
-        Fixtures.tearDown(driver);
+        chameleon.homePage.openSubMenuItem("Communications", "Message Templates");
+        chameleon.homePage.clickSearchButton();
+
+        List<String> firstList = chameleon.homePage.readDataFromCells();
+        chameleon.homePage.searchWithData(firstList);
     }
-
-
 }
