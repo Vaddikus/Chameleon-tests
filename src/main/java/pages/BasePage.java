@@ -12,12 +12,11 @@ public class BasePage {
 
     public WebDriver driver;
     //TODO: need move in other class
-    public Wait wait;
+
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         //TODO: the same
-        wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20), this);
     }
 

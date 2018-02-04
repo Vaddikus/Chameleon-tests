@@ -3,17 +3,16 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 public class LoginPage extends BasePage {
 
-    @FindBy(how = How.ID, using = "Username")
+    @FindBy(id = "Username")
     WebElement loginField;
 
-    @FindBy(how = How.ID, using = "Password")
+    @FindBy(id = "Password")
     WebElement passwordField;
 
-    @FindBy(how = How.CSS, using = "input[type='submit']")
+    @FindBy(css = "input[type='submit']")
     WebElement logButton;
 
     public LoginPage(WebDriver driver) {

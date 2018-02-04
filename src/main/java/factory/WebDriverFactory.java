@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import utils.ClassNameUtil;
 
+
 public class WebDriverFactory {
 
     static Logger log = Logger.getLogger(ClassNameUtil.getCurrentClassName());
@@ -17,7 +18,7 @@ public class WebDriverFactory {
                 System.setProperty("webdriver.chrome.driver", "C:\\Users\\Vadym\\Documents\\drivers\\chromedriver.exe");
                 ChromeOptions ops = new ChromeOptions();
                 ops.addArguments("--disable-notifications");
-                return new ChromeDriver(ops);
+                return new ChromeDriver();
 
             case "firefox":
                 return new FirefoxDriver();
@@ -26,5 +27,7 @@ public class WebDriverFactory {
                 return new ChromeDriver();
         }
     }
+
+
 }
 
